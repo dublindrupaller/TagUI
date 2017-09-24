@@ -218,7 +218,7 @@ function parse_intent($script_line, $tagui) {
 }
 
 
-function is_code($raw_intent) {
+function is_code($raw_intent) { // TODO: move to class
   // due to asynchronous waiting for element, if/for/while can work for parsing single step
   // other scenarios can be assumed to behave as unparsed javascript in casperjs context
   // to let if/for/while handle multiple steps/code use the { and } steps to define block
@@ -239,7 +239,8 @@ function is_code($raw_intent) {
   
 
 
-function abs_file($filename) { // helper function to return absolute filename
+function abs_file($filename) { // TODO: move to taggui class
+  // helper function to return absolute filename
   if ($filename == "") return ""; $flow_script = $GLOBALS['script']; // get flow filename
   if (substr($filename,0,1)=="/") return $filename; // return mac/linux absolute filename directly
   if (substr($filename,1,1)==":") return str_replace("\\","/",$filename); // return windows absolute filename directly

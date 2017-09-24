@@ -37,3 +37,6 @@
 /src/tagui.sikuli/sikulix*
 /src/tagui.sikuli/SikuliX*
 /src/tagui.sikuli/runsikulix
+
+# Exclude komodo project files
+*komodoprojects
