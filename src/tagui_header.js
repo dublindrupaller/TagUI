@@ -19,6 +19,9 @@ var sikuli_count = 0; var chrome_id = 0;
 // chrome context for frame handling and targetid for popup handling
 var chrome_context = 'document'; var chrome_targetid = '';
 
+// JSON variable to pass variables into browser DOM
+var dom_json = {}; var dom_result = '';
+
 // variable for advance usage of api step
 var api_config = {method:'GET', header:[], body:{}};
 
@@ -50,11 +53,10 @@ var row_data = ""; var table_cell = ""; var fs = require('fs'); fs.write(file_na
 if (!casper.exists(selector) || (selector.toString().indexOf('xpath selector: ')==-1)) return false; // exit if invalid
 if (selector.toString().length == 16) selector = ''; else selector = selector.toString().substring(16); // get xpath
 for (table_row=1; table_row<=1024; table_row++) {row_data = ""; for (table_col=1; table_col<=1024; table_col++) {
-table_cell = '((' + selector + '//tr)[' + table_row + ']//td)[' + table_col + ']'; // build cell xpath selector
+table_cell = '(((' + selector + '//tr)[' + table_row + ']//th)' + '|'; // build cell xpath selector to include
+table_cell += '((' + selector + '//tr)[' + table_row + ']//td))[' + table_col + ']'; // both td and td elements
 if (casper.exists(x(table_cell))) row_data = row_data + '","' + casper.fetchText(x(table_cell)).trim();
-else {table_cell = '((' + selector + '//tr)[' + table_row + ']//th)[' + table_col + ']'; // for table header cells
-if (casper.exists(x(table_cell))) row_data = row_data + '","' + casper.fetchText(x(table_cell)).trim();
-else break;}} // if searching for data cell td and header cell th is not successful means end of row is reached
+else break;} // if searching for table cells (th and td) is not successful,  means end of row is reached
 if (row_data.substr(0,2) == '",') {row_data = row_data.substr(2); row_data += '"'; append_text(file_name,row_data);}
 else return true;}} // if '",' is not found, means end of table is reached as there is no cell found in row
 
@@ -115,7 +117,7 @@ function sikuli_handshake() { // techo('[connecting to sikuli process]');
 var ds; if (flow_path.indexOf('/') !== -1) ds = '/'; else ds = '\\';
 var fs = require('fs'); fs.write('tagui.sikuli'+ds+'tagui_sikuli.in','','w'); var sikuli_handshake = '';
 if (!fs.exists('tagui.sikuli'+ds+'tagui_sikuli.out')) fs.write('tagui.sikuli'+ds+'tagui_sikuli.out','','w');
-do {sleep(1000); sikuli_handshake = fs.read('tagui.sikuli'+ds+'tagui_sikuli.out').trim();}
+do {sleep(500); sikuli_handshake = fs.read('tagui.sikuli'+ds+'tagui_sikuli.out').trim();}
 while (sikuli_handshake !== '[0] START'); // techo('[connected to sikuli process]');
 }
 
@@ -124,7 +126,7 @@ function sikuli_step(sikuli_intent) {sikuli_count++;
 if (sikuli_count == 1) sikuli_handshake(); // handshake on first call
 var ds; if (flow_path.indexOf('/') !== -1) ds = '/'; else ds = '\\';
 var fs = require('fs'); fs.write('tagui.sikuli'+ds+'tagui_sikuli.in','['+sikuli_count.toString()+'] '+sikuli_intent,'w');
-var sikuli_result = ''; do {sleep(1000); sikuli_result = fs.read('tagui.sikuli'+ds+'tagui_sikuli.out').trim();}
+var sikuli_result = ''; do {sleep(500); sikuli_result = fs.read('tagui.sikuli'+ds+'tagui_sikuli.out').trim();}
 while (sikuli_result.indexOf('['+sikuli_count.toString()+'] ') == -1);
 if (sikuli_result.indexOf('SUCCESS') !== -1) return true; else return false;}
 
@@ -290,13 +292,15 @@ chrome.download = function(url,filename) { // download function for downloading 
 casper.echo('ERROR - for visible Chrome, download file directly through normal webpage interaction');
 casper.echo('ERROR - for headless Chrome, it prevents file download for now - Chromium issue 696481');};
 
-chrome.evaluate = function(fn_statement) { // evaluate expression in browser dom context
+chrome.evaluate = function(fn_statement,eval_json) { // evaluate expression in browser dom context
 // chrome runtime.evaluate is different from casperjs evaluate, do some processing to reduce gap
-var statement = fn_statement.toString(); statement = statement.slice(statement.indexOf('{')+1,statement.lastIndexOf('}'));
-statement = statement.replace(/return /g,''); // defining as function() and return keyword is invalid for chrome
+var statement = fn_statement.toString(); if (!eval_json)
+{statement = statement.slice(statement.indexOf('{')+1,statement.lastIndexOf('}'));
+statement = statement.replace(/return /g,'');} // defining function() with return keyword is invalid for chrome
+else statement = '(' + statement + ')' + '(' + JSON.stringify(eval_json) + ')'; // unless variable is passed into fx
 var ws_message = chrome_step('Runtime.evaluate',{expression: statement}); // statements can be separated by ;
 try {var ws_json = JSON.parse(ws_message); if (ws_json.result.result.value)
-return ws_json.result.result.value; else return '';} catch(e) {return '';}};
+return ws_json.result.result.value; else return null;} catch(e) {return null;}};
 
 chrome.withFrame = function(frameInfo,then) { // replace casperjs frame for switching frame context
 var new_context = ''; if (chrome_context == 'document') new_context = 'mainframe_context';
@@ -383,6 +387,7 @@ case 'echo': return echo_intent(live_line); break;
 case 'save': return save_intent(live_line); break;
 case 'dump': return dump_intent(live_line); break;
 case 'write': return write_intent(live_line); break;
+case 'load': return load_intent(live_line); break;
 case 'snap': return snap_intent(live_line); break;
 case 'table': return table_intent(live_line); break;
 case 'wait': return wait_intent(live_line); break;
@@ -416,6 +421,7 @@ if (lc_raw_intent.substr(0,5) == 'echo ') return 'echo';
 if (lc_raw_intent.substr(0,5) == 'save ') return 'save';
 if (lc_raw_intent.substr(0,5) == 'dump ') return 'dump';
 if (lc_raw_intent.substr(0,6) == 'write ') return 'write';
+if (lc_raw_intent.substr(0,5) == 'load ') return 'load';
 if (lc_raw_intent.substr(0,5) == 'snap ') return 'snap';
 if (lc_raw_intent.substr(0,6) == 'table ') return 'table';
 if (lc_raw_intent.substr(0,5) == 'wait ') return 'wait';
@@ -443,6 +449,7 @@ if (lc_raw_intent == 'echo') return 'echo';
 if (lc_raw_intent == 'save') return 'save';
 if (lc_raw_intent == 'dump') return 'dump';
 if (lc_raw_intent == 'write') return 'write';
+if (lc_raw_intent == 'load') return 'load';
 if (lc_raw_intent == 'snap') return 'snap';
 if (lc_raw_intent == 'table') return 'table';
 if (lc_raw_intent == 'wait') return 'wait';
@@ -631,6 +638,15 @@ else if (params.indexOf(' to ') > -1)
 return "append_text('" + abs_file(param2) + "'," + add_concat(param1) + ")"; else
 return "append_text(''," + add_concat(params) + ")";}
 
+function load_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' to '))).trim();
+var param2 = (params.substr(4+params.indexOf(' to '))).trim();
+if (params == '') return "this.echo('ERROR - filename missing for " + raw_intent + "')";
+else if (params.indexOf(' to ') > -1)
+return "var fs = require('fs'); " + param2 + " = ''; if (fs.exists('" + abs_file(param1) + "')) " + param2 +  " = fs.read('" + abs_file(param1) + "').trim(); else this.echo('ERROR - cannot find file " + param1 + "')"; else
+return "this.echo('ERROR - variable missing for " + raw_intent + "')";}
+
 function snap_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
 var param1 = (params.substr(0,params.indexOf(' to '))).trim();
@@ -683,7 +699,7 @@ else return "api_result = call_api('" + params + "'); " +
 function dom_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
 if (params == '') return "this.echo('ERROR - statement missing for " + raw_intent + "')";
-else return "dom_result = this.evaluate(function() {" + params + "})";}
+else return "dom_result = this.evaluate(function(dom_json) {" + params + "}, dom_json)";}
 
 function js_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
