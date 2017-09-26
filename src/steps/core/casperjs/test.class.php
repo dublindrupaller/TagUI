@@ -50,22 +50,3 @@ class test extends step {
     echo "ERROR - " . current_line() . " support CSS selector or tx('selector') for XPath algo by TagUI" . "\n";
   }
 }
-
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function test_intent($raw_intent) {
-  echo "ERROR - " . current_line() . " use CasperJS tester module to professionally " . $raw_intent . "\n";
-  echo "ERROR - " . current_line() . " info at http://docs.casperjs.org/en/latest/modules/tester.html" . "\n";
-  echo "ERROR - " . current_line() . " support CSS selector or tx('selector') for XPath algo by TagUI" . "\n";
-}
-
-
-
-
-*/
