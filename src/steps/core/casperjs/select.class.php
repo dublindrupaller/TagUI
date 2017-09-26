@@ -68,26 +68,3 @@ class_alias('select', 'choose');
 
 
 
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function select_intent($raw_intent) {
-  $twb = $GLOBALS['tagui_web_browser'];
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  $param1 = trim(substr($params,0,strpos($params," as "))); $param2 = trim(substr($params,4+strpos($params," as ")));
-  if (is_sikuli($param1) and is_sikuli($param2)) {
-    $abs_param1 = abs_file($param1); $abs_intent = str_replace($param1,$abs_param1,$raw_intent);
-    $abs_param2 = abs_file($param2); $abs_intent = str_replace($param2,$abs_param2,$abs_intent);
-    return call_sikuli($abs_intent,$abs_param1);
-  } // use sikuli visual automation as needed
-  if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " target/option missing for " . $raw_intent . "\n"; 
-  else return "{techo('".$raw_intent."');".beg_tx($param1)."var select_locator = tx('".$param1."');\n"."if (is_xpath_selector(select_locator.toString().replace('xpath selector: ','')))\n"."select_locator = select_locator.toString().substring(16);\n".$twb.".selectOptionByValue(select_locator,'".$param2."');".end_tx($param1);
-}
-
-*/
-
