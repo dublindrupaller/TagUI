@@ -56,23 +56,3 @@ class table extends step {
   }
 }
 
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function table_intent($raw_intent) {
-  $twb = $GLOBALS['tagui_web_browser'];
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  $param1 = trim(substr($params,0,strpos($params," to "))); $param2 = trim(substr($params,4+strpos($params," to ")));
-  if ($params == "") echo "ERROR - " . current_line() . " target missing for " . $raw_intent . "\n";
-  else if (strpos($params," to ")!==false) return "{techo('".$raw_intent."');".beg_tx($param1). "save_table('".abs_file($param2)."',tx('".$param1."'));".end_tx($param1); 
-  else return "{techo('".$raw_intent."');".beg_tx($params)."save_table('',tx('".$params."'));".end_tx($params);
-}
-
-
-
-*/
