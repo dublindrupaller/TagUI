@@ -51,21 +51,4 @@ class js extends step {
     else return $params.end_fi()."\n";
   }
 
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function js_intent($raw_intent) {
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  if ($params == "") echo "ERROR - " . current_line() . " statement missing for " . $raw_intent . "\n";
-  else return $params.end_fi()."\n";
-}
-
-
-*/
-
 }
