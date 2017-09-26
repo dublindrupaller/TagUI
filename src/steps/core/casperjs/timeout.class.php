@@ -50,21 +50,3 @@ class timeout extends step {
     else return "casper.options.waitTimeout = " . (floatval($params)*1000) . ";" . end_fi()."\n";
   }
 }
-
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function timeout_intent($raw_intent) {
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  if ($params == "") echo "ERROR - " . current_line() . " time in seconds missing for " . $raw_intent . "\n";
-  else return "casper.options.waitTimeout = " . (floatval($params)*1000) . ";" . end_fi()."\n";
-}
-
-
-*/
-
