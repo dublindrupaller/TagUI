@@ -56,26 +56,4 @@ class dump extends step {
     else return "{techo('".$raw_intent."');\nsave_text(''," . add_concat($params) . ");}".end_fi()."\n";
   }
 
-
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function dump_intent($raw_intent) {
-  $raw_intent = str_replace("'","\"",$raw_intent); // avoid breaking echo below when single quote is used
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  $param1 = trim(substr($params,0,strpos($params," to "))); $param2 = trim(substr($params,4+strpos($params," to ")));
-  if ($params == "") echo "ERROR - " . current_line() . " variable missing for " . $raw_intent . "\n";
-  else if (strpos($params," to ")!==false)
-  return "{techo('".$raw_intent."');\nsave_text('".abs_file($param2)."',".add_concat($param1).");}".end_fi()."\n";
-  else return "{techo('".$raw_intent."');\nsave_text(''," . add_concat($params) . ");}".end_fi()."\n";
-}
-
-
-*/
-
 }

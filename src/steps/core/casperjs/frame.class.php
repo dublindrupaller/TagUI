@@ -61,30 +61,4 @@ class frame extends step {
     }
   }
 
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function frame_intent($raw_intent) {
-  if ($GLOBALS['inside_frame'] != 0){
-    echo "ERROR - " . current_line() . " frame called consecutively " . $raw_intent . "\n"; return;
-  }
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  $param1 = trim(substr($params,0,strpos($params,"|"))); $param2 = trim(substr($params,1+strpos($params,"|")));
-  if ($params == "") echo "ERROR - " . current_line() . " name missing for " . $raw_intent . "\n";
-  else if (strpos($params,"|")!==false) {
-    $GLOBALS['inside_frame']=2; return "{techo('".$raw_intent."');\ncasper.withFrame('".$param1."', function() {casper.withFrame('".$param2."', function() {\n";
-  } else {
-    $GLOBALS['inside_frame']=1; return "{techo('".$raw_intent."');\ncasper.withFrame('".$params."', function() {\n";
-  }
-}
-
-
-
-*/
-
 }

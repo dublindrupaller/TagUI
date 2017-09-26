@@ -53,20 +53,6 @@ class show extends step {
   }
 }
 class_alias('show', 'print');
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
 
 
 
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function show_intent($raw_intent) {
-  $twb = $GLOBALS['tagui_web_browser'];
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  if (strtolower($params) == "page") return "this.echo('".$raw_intent."' + ' - \\n' + ".$twb.".getHTML());".end_fi()."\n";
-  if ($params == "") echo "ERROR - " . current_line() . " target missing for " . $raw_intent . "\n"; 
-  else return "{// nothing to do on this line".beg_tx($params)."this.echo('".$raw_intent."' + ' - ' + ".$twb.".fetchText(tx('" . $params . "')).trim());".end_tx($params);
-}
-
-*/

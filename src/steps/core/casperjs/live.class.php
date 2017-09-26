@@ -48,22 +48,4 @@ class live extends step {
     return "{var live_input = ''; var sys = require('system'); sys.stdout.write('LIVE MODE - type done to quit\\n \\b');\n"."while (true) {live_input = sys.stdin.readLine(); // evaluate input in casperjs context until done is entered\n"."if (live_input.indexOf('done') == 0) break; eval(tagui_parse(live_input));}}".end_fi()."\n";
   }
 
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function live_intent($raw_intent) { // live mode to interactively test tagui steps and js code (casperjs context)
-  return "{var live_input = ''; var sys = require('system'); sys.stdout.write('LIVE MODE - type done to quit\\n \\b');\n"."while (true) {live_input = sys.stdin.readLine(); // evaluate input in casperjs context until done is entered\n"."if (live_input.indexOf('done') == 0) break; eval(tagui_parse(live_input));}}".end_fi()."\n";
-}
-
-
-
-
-
-*/
-
 }

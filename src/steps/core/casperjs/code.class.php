@@ -51,24 +51,4 @@ class code extends step {
     if ((substr($params,0,3)=="if ") or (substr($params,0,8)=="else if ") or (substr($params,0,4)=="for ") or (substr($params,0,6)=="while ")) return $params."\n"; 
     else return $params.end_fi()."\n";
   }
-
-
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function code_intent($raw_intent) {
-  $params = parse_condition($raw_intent);
-  // not relevant to call end_fi for condition statement, will reset for and while loop tracker prematurely
-  if ((substr($params,0,3)=="if ") or (substr($params,0,8)=="else if ") or (substr($params,0,4)=="for ") or (substr($params,0,6)=="while ")) return $params."\n"; 
-  else return $params.end_fi()."\n";
-}
-
-
-*/
-
 }

@@ -53,19 +53,5 @@ class down extends step {
     if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " url/filename missing for " . $raw_intent . "\n"; 
     else return "{techo('".$raw_intent."');\n".$twb.".download('".$param1."','".abs_file($param2)."');}".end_fi()."\n";
   }    
-
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function down_intent($raw_intent) {
-  $twb = $GLOBALS['tagui_web_browser'];
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  $param1 = trim(substr($params,0,strpos($params," to "))); $param2 = trim(substr($params,4+strpos($params," to ")));
-  if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " url/filename missing for " . $raw_intent . "\n"; 
-  else return "{techo('".$raw_intent."');\n".$twb.".download('".$param1."','".abs_file($param2)."');}".end_fi()."\n";
-}
-*/
-
+  
 }

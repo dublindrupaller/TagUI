@@ -60,19 +60,3 @@ class hover extends step {
 }
 
 class_alias('hover', 'move');
-
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function hover_intent($raw_intent) {
-   if (is_sikuli($params)) {
-    $abs_params = abs_file($params); 
-    $abs_intent = str_replace($params,$abs_params,$raw_intent);
-    return call_sikuli($abs_intent,$abs_params);
-  } // use sikuli visual automation as needed
-  if ($params == "") echo "ERROR - " . current_line() . " target missing for " . $raw_intent . "\n"; 
-  else return "{techo('".$raw_intent."');".beg_tx($params).$twb.".mouse.move(tx('" . $params . "'));".end_tx($params);
-}
-*/
