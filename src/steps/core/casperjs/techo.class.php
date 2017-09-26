@@ -49,12 +49,3 @@ class techo extends step {
     return "{techo('".$raw_intent."');".beg_tx($params).$twb.".click(tx('" . $params . "'));".end_tx($params);           
   }    
 }
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function echo_intent($raw_intent) {
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  if ($params == "") echo "ERROR - " . current_line() . " text missing for " . $raw_intent . "\n"; 
-  else return "this.echo(".add_concat($params).");".end_fi()."\n";
-}
-*/
