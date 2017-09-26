@@ -56,31 +56,4 @@ class popup extends step {
       return "{techo('".$raw_intent."');\ncasper.waitForPopup(/".preg_quote($params)."/, function then() {},\n"."function timeout() {this.echo('ERROR - cannot find popup ".$params."').exit();});\n"."casper.withPopup(/".preg_quote($params)."/, function() {\n";
     }
   }
-
-// notes from GUS
-// The above depends on the assumption that the checking of $params not being empty happens before the call to the parseIntent() method
-// same goes for the sikuli check and establishing $twb.
-
-
-
-/*  copying in the original php function from tagui_parse.php for john to review oop version.
-
-function popup_intent($raw_intent) {
-  if ($GLOBALS['inside_popup'] != 0){
-    echo "ERROR - " . current_line() . " popup called consecutively " . $raw_intent . "\n"; return;
-  }
-  $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-  if ($GLOBALS['inside_frame']!=0) echo "ERROR - " . current_line() . " invalid after frame - " . $raw_intent . "\n";
-  else if ($params == "") echo "ERROR - " . current_line() . " keyword missing for " . $raw_intent . "\n";
-  else {
-    $GLOBALS['inside_popup']=1; // during execution check for popup before going into popup context
-    return "{techo('".$raw_intent."');\ncasper.waitForPopup(/".preg_quote($params)."/, function then() {},\n"."function timeout() {this.echo('ERROR - cannot find popup ".$params."').exit();});\n"."casper.withPopup(/".preg_quote($params)."/, function() {\n";
-  }
-}
-
-
-
-
-*/
-
 }
