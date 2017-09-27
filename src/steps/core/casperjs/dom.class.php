@@ -50,4 +50,14 @@ class dom extends step {
     else return "dom_result = ".$twb.".evaluate(function() {".$params."});".end_fi()."\n";
   }
 
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+function dom_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (params == '') return "this.echo('ERROR - statement missing for " + raw_intent + "')";
+else return "dom_result = this.evaluate(function(dom_json) {" + params + "}, dom_json)";}
+TAGUI;
+    return $js;
+  }
 }
