@@ -51,4 +51,12 @@ class receive extends step {
     if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " keyword/filename missing for " . $raw_intent . "\n"; 
     else return "{techo('".$raw_intent."');\n"."casper.on('resource.received', function(resource) {if (resource.stage !== 'end') return;\n"."if (resource.url.indexOf('".$param1."') > -1) ".$twb.".download(resource.url, '".abs_file($param2)."');});}".end_fi()."\n";
   }
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+function receive_intent(raw_intent) {
+return "this.echo('ERROR - step not supported in live mode, it requires creating CasperJS event')";}
+TAGUI;
+    return $js;
+  }    
 }
