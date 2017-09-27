@@ -59,4 +59,24 @@ class snap extends step {
     else if (strpos($params," to ")!==false) return "{techo('".$raw_intent."');".beg_tx($param1). $twb.".captureSelector('".abs_file($param2)."',tx('".$param1."'));".end_tx($param1); 
     else return "{techo('".$raw_intent."');".beg_tx($params). $twb.".captureSelector(snap_image(),tx('".$params."'));".end_tx($params);
   }
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+function snap_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' to '))).trim();
+var param2 = (params.substr(4+params.indexOf(' to '))).trim();
+if ((params.toLowerCase() == 'page') || (param1.toLowerCase() == 'page')) {
+if (params.indexOf(' to ') > -1) return "this.capture('" + abs_file(param2) + "')";
+else return "this.capture(snap_image())";}
+if (params == '') return "this.echo('ERROR - target missing for " + raw_intent + "')";
+else if (params.indexOf(' to ') > -1)
+{if (check_tx(param1)) return "this.captureSelector('" + abs_file(param2) + "',tx('" + param1 + "'))"; 
+else return "this.echo('ERROR - cannot find " + param1 + "')";}
+else {if (check_tx(params)) return "this.captureSelector(snap_image(),tx('" + params + "'))";
+else return "this.echo('ERROR - cannot find " + params + "')";}}
+TAGUI;
+    return $js;
+  }    
+
 }
