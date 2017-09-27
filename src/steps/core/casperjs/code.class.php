@@ -51,4 +51,14 @@ class code extends step {
     if ((substr($params,0,3)=="if ") or (substr($params,0,8)=="else if ") or (substr($params,0,4)=="for ") or (substr($params,0,6)=="while ")) return $params."\n"; 
     else return $params.end_fi()."\n";
   }
+
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+ function code_intent(raw_intent) {
+return check_chrome_context(raw_intent);}
+TAGUI;
+    return $js;
+  }
+
 }
