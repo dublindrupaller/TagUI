@@ -5,14 +5,14 @@
  */
 
 /**
- *  down class which is a child of step
+ *  dom class which is a child of step
  *  The class contains two methods:
  *  - public getIntent()
  *  - public parseIntent()
  */
 
-class down extends step {
-
+class dom extends step {  
+  
   /**
    * Construct wrapper object   
    */
@@ -24,7 +24,7 @@ class down extends step {
    */
   public function getIntent($intent) {    
 
-   if ((substr($intent,0,5)=="down ") or (substr($intent,0,9)=="download ")) {
+    if (substr($intent,0,4)=="dom "){
       return $this->intent;
     }    
     return FALSE;
@@ -44,26 +44,20 @@ class down extends step {
    *   if input is meant for sikuli visual automation 
    *
    */
-  public function parseIntent($intent, $raw_intent, $twb, $sikuli = FALSE) {     
-    // TODO: $params is passed as an array but sent to casperjs code as a string    
+  public function parseIntent($intent, $raw_intent, $twb, $sikuli=FALSE) {     
     $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
-    $param1 = trim(substr($params,0,strpos($params," to "))); 
-    $param2 = trim(substr($params,4+strpos($params," to ")));
-
-    if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " url/filename missing for " . $raw_intent . "\n"; 
-    else return "{techo('".$raw_intent."');\n".$twb.".download('".$param1."','".abs_file($param2)."');}".end_fi()."\n";
-  } 
+    if ($params == "") echo "ERROR - " . current_line() . " statement missing for " . $raw_intent . "\n";
+    else return "dom_result = ".$twb.".evaluate(function() {".$params."});".end_fi()."\n";
+  }
 
 
   public function get_header_js() {
     $js = <<<TAGUI
-function down_intent(raw_intent) {
+function dom_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
-var param1 = (params.substr(0,params.indexOf(' to '))).trim();
-var param2 = (params.substr(4+params.indexOf(' to '))).trim();
-if ((param1 == '') || (param2 == '')) return "this.echo('ERROR - url/filename missing for " + raw_intent + "')";
-else return "this.download('" + param1 + "','" + abs_file(param2) + "')";}
+if (params == '') return "this.echo('ERROR - statement missing for " + raw_intent + "')";
+else return "dom_result = this.evaluate(function(dom_json) {" + params + "}, dom_json)";}
 TAGUI;
-   return $js;
+    return $js;
   }
 }
