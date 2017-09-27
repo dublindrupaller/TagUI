@@ -61,4 +61,11 @@ class frame extends step {
     }
   }
 
+  public function get_header_js() {
+    $js = <<<TAGUI
+function frame_intent(raw_intent) {
+return "this.echo('ERROR - step not supported in live mode, it is meant for trying single steps')";}
+TAGUI;
+    return $js;
+  }
 }
