@@ -53,7 +53,21 @@ class read extends step {
     if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " target/variable missing for " . $raw_intent . "\n"; 
   }
 
+  public function get_header_js() {
+    $js = <<<TAGUI
+function read_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' to '))).trim();
+var param2 = (params.substr(4+params.indexOf(' to '))).trim();
+if ((param1.toLowerCase() == 'page') && (param2 !== '')) return param2 + " = this.getHTML()";
+if ((param1 == '') || (param2 == '')) return "this.echo('ERROR - target/variable missing for " + raw_intent + "')";
+else if (check_tx(param1)) return param2 + " =  this.fetchText(tx('" + param1 + "')).trim()";
+else return "this.echo('ERROR - cannot find " + param1 + "')";}
+TAGUI;
+    return $js;
+  }    
+
+
 }
 
 class_alias('read', 'fetch');
-
