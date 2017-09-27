@@ -72,7 +72,29 @@ class type extends step {
         $twb.".sendKeys(tx('".$param1."'),'".$param2."',{keepFocus: true});".end_tx($param1);
       }
     }
-  }    
+  }
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+function type_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' as '))).trim();
+var param2 = (params.substr(4+params.indexOf(' as '))).trim();
+if (is_sikuli(param1) && param2 !== '') {
+var abs_param1 = abs_file(param1); var abs_intent = raw_intent.replace(param1,abs_param1);
+return call_sikuli(abs_intent,abs_param1);} // use sikuli visual automation as needed
+if ((param1 == '') || (param2 == '')) return "this.echo('ERROR - target/text missing for " + raw_intent + "')";
+else if (check_tx(param1)) 
+{if (param2.indexOf('[clear]') == 0) {if (param2.length>7) param2 = param2.substr(7); else param2 = "";
+clear_field = "this.sendKeys(tx('" + param1 + "'),'',{reset: true}); ";} else clear_field = "";
+if (param2.indexOf('[enter]') == -1) return clear_field + "this.sendKeys(tx('" + param1 + "'),'" + param2 + "')";
+else // special handling to send enter key events
+{param2 = param2.replace(/\[enter\]/g,"',{keepFocus: true}); this.sendKeys(tx('" + param1 + "'),casper.page.event.key.Enter,{keepFocus: true}); this.sendKeys(tx('" + param1 + "'),'");
+return clear_field + "this.sendKeys(tx('" + param1 + "'),'" + param2 + "',{keepFocus: true});";}}
+else return "this.echo('ERROR - cannot find " + param1 + "')";}
+TAGUI;
+    return $js;
+  }           
 
 }
 
