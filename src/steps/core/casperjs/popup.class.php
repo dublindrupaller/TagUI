@@ -56,4 +56,14 @@ class popup extends step {
       return "{techo('".$raw_intent."');\ncasper.waitForPopup(/".preg_quote($params)."/, function then() {},\n"."function timeout() {this.echo('ERROR - cannot find popup ".$params."').exit();});\n"."casper.withPopup(/".preg_quote($params)."/, function() {\n";
     }
   }
+
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+function popup_intent(raw_intent) {
+return "this.echo('ERROR - step not supported in live mode, it is meant for trying single steps')";}
+TAGUI;
+    return $js;
+  }    
+
 }
