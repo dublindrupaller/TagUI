@@ -49,4 +49,12 @@ class test extends step {
     echo "ERROR - " . current_line() . " info at http://docs.casperjs.org/en/latest/modules/tester.html" . "\n";
     echo "ERROR - " . current_line() . " support CSS selector or tx('selector') for XPath algo by TagUI" . "\n";
   }
+
+   public function get_header_js() {
+    $js = <<<TAGUI
+function test_intent(raw_intent) {
+return "this.echo('ERROR - use CasperJS tester module to professionally " + raw_intent + "\\nERROR - info at http://docs.casperjs.org/en/latest/modules/tester.html\\nERROR - support CSS selector or tx(\\'selector\\') for XPath algo by TagUI')";}
+TAGUI;
+    return $js;
+  }       
 }
