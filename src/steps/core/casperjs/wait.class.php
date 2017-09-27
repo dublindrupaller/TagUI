@@ -50,4 +50,13 @@ class wait extends step {
     else if ($GLOBALS['inside_popup']!=0) echo "ERROR - " . current_line() . " invalid after popup - " . $raw_intent . "\n";
     else return "techo('".$raw_intent."');});\n\ncasper.wait(" . (floatval($params)*1000) . ", function() {\n";
   }
+
+    
+  public function get_header_js() {
+    $js = <<<TAGUI
+function wait_intent(raw_intent) {
+return "this.echo('ERROR - waiting for some time is not relevant in live mode')";}
+TAGUI;
+    return $js;
+  }      
 }
