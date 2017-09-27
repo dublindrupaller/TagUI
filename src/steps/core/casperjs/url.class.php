@@ -70,4 +70,14 @@ class url extends step {
       $raw_intent."' + ' - ' + ".$twb.".getTitle());});\n\ncasper.then(function() {\n".$dynamic_footer;}
     }
   }
+
+  
+  public function get_header_js() {
+    $js = <<<TAGUI
+function url_intent(raw_intent) {
+if (chrome_id == 0) return "this.echo('ERROR - step only supported in live mode using Chrome browser')";
+else return "this.evaluate(function() {window.location.href = \"" + raw_intent + "\"})";}
+TAGUI;
+    return $js;
+  }      
 } 
