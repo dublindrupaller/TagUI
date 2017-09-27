@@ -51,8 +51,17 @@ class show extends step {
     if ($params == "") echo "ERROR - " . current_line() . " target missing for " . $raw_intent . "\n"; 
     else return "{// nothing to do on this line".beg_tx($params)."this.echo('".$raw_intent."' + ' - ' + ".$twb.".fetchText(tx('" . $params . "')).trim());".end_tx($params);
   }
+
+  public function get_header_js() {
+    $js = <<<TAGUI
+function show_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (params.toLowerCase() == 'page') return "this.echo('" + raw_intent + "' + ' - ' + '\\n' + this.getHTML())";
+if (params == '') return "this.echo('ERROR - target missing for " + raw_intent + "')";
+else if (check_tx(params)) return "this.echo('" + raw_intent + "' + ' - ' + this.fetchText(tx('" + params + "')).trim())";else return "this.echo('ERROR - cannot find " + params + "')";}
+TAGUI;
+    return $js;
+  }    
+
 }
 class_alias('show', 'print');
-
-
-
