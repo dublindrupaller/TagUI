@@ -57,4 +57,24 @@ class save extends step {
     else if (strpos($params," to ")!==false) return "{techo('".$raw_intent."');".beg_tx($param1). "save_text('".abs_file($param2)."',".$twb.".fetchText(tx('".$param1."')).trim());".end_tx($param1); 
     else return "{techo('".$raw_intent."');".beg_tx($params). "save_text('',".$twb.".fetchText(tx('" . $params . "')).trim());".end_tx($params);
   }
+
+  
+  public function get_header_js() {
+    $js = <<<TAGUI
+function save_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' to '))).trim();
+var param2 = (params.substr(4+params.indexOf(' to '))).trim();
+if ((params.toLowerCase() == 'page') || (param1.toLowerCase() == 'page')) {
+if (params.indexOf(' to ') > -1) return "save_text('" + abs_file(param2) + "',this.getHTML())";
+else return "save_text('',this.getHTML())";}
+if (params == '') return "this.echo('ERROR - target missing for " + raw_intent + "')";
+else if (params.indexOf(' to ') > -1)
+{if (check_tx(param1)) return "save_text('" + abs_file(param2) + "',this.fetchText(tx('" + param1 + "')).trim())";
+else return "this.echo('ERROR - cannot find " + param1 + "')";}
+else {if (check_tx(params)) return "save_text('',this.fetchText(tx('" + params + "')).trim())";
+else return "this.echo('ERROR - cannot find " + params + "')";}}
+TAGUI;
+    return $js;
+  }    
 }
