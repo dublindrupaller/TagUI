@@ -51,4 +51,14 @@ class js extends step {
     else return $params.end_fi()."\n";
   }
 
+  public function get_header_js() {
+    $js = <<<TAGUI
+function js_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (params == '') return "this.echo('ERROR - statement missing for " + raw_intent + "')";
+else return check_chrome_context(params);}
+TAGUI;
+    return $js;
+  }    
+
 }
