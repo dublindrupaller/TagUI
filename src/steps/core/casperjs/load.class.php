@@ -4,10 +4,12 @@
  *
  */
 /**
- *  load class which is a child of step
- *  The class contains two methods:
+ *
+ *  The class contains four methods:
+ *  - __construct
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js()
  */
 class load extends step {
   
