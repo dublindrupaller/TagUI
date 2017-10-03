@@ -6,9 +6,10 @@
 
 /**
  *  dump class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class dump extends step {  
@@ -56,4 +57,17 @@ class dump extends step {
     else return "{techo('".$raw_intent."');\nsave_text(''," . add_concat($params) . ");}".end_fi()."\n";
   }
 
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function dump_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' to '))).trim();
+var param2 = (params.substr(4+params.indexOf(' to '))).trim();
+if (params == '') return "this.echo('ERROR - variable missing for " + raw_intent + "')";
+else if (params.indexOf(' to ') > -1)
+return "save_text('" + abs_file(param2) + "'," + add_concat(param1) + ")"; else
+return "save_text(''," + add_concat(params) + ")";}
+TAGUI;
+    return $js; 
+  }
 }
