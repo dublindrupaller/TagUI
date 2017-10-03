@@ -6,12 +6,10 @@
 
 /**
  *  write class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class write extends step {  
@@ -58,7 +56,7 @@ class write extends step {
 
   
     
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function write_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
