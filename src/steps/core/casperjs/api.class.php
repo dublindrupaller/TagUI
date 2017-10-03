@@ -7,9 +7,10 @@
 
 /**
  *  api class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class api extends step {  
@@ -49,5 +50,16 @@ class api extends step {
     $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
     if ($params == "") echo "ERROR - " . current_line() . " API URL missing for " . $raw_intent . "\n"; 
     else return "{techo('".$raw_intent."');\napi_result = call_api('".$params."');\n" ."try {api_json = JSON.parse(api_result);} catch(e) {api_json = JSON.parse('null');}}".end_fi()."\n";
+  }
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+  function api_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (params == '') return "this.echo('ERROR - API URL missing for " + raw_intent + "')";
+else return "api_result = call_api('" + params + "'); " +
+"try {api_json = JSON.parse(api_result);} catch(e) {api_json = JSON.parse('null');}";}
+TAGUI;
+    return $js;
   }
 }
