@@ -5,12 +5,10 @@
  */
 /**
  *  url class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 class url extends step {
   
@@ -75,7 +73,7 @@ class url extends step {
   }
 
   
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function url_intent(raw_intent) {
 if (chrome_id == 0) return "this.echo('ERROR - step only supported in live mode using Chrome browser')";
