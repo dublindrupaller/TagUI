@@ -61,9 +61,7 @@ class select extends step {
     if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " target/option missing for " . $raw_intent . "\n";
 
     else return "{techo('".$raw_intent."');".beg_tx($param1)."var select_locator = tx('".$param1."');\n"."if (is_xpath_selector(select_locator.toString().replace('xpath selector: ','')))\n"."select_locator = select_locator.toString().substring(16);\n".$twb.".selectOptionByValue(select_locator,'".$param2."');".end_tx($param1);
-  }
-
-
+  } 
   
   public function getHeaderJs() {
     $js = <<<TAGUI
@@ -78,6 +76,3 @@ TAGUI;
 }
 
 class_alias('select', 'choose');
-
-
-
