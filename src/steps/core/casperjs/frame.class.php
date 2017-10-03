@@ -6,9 +6,10 @@
 
 /**
  *  frame class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class frame extends step {  
@@ -60,5 +61,12 @@ class frame extends step {
       $GLOBALS['inside_frame']=1; return "{techo('".$raw_intent."');\ncasper.withFrame('".$params."', function() {\n";
     }
   }
-
+  
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function frame_intent(raw_intent) {
+return "this.echo('ERROR - step not supported in live mode, it is meant for trying single steps')";}
+TAGUI;
+    return $js;
+  }
 }
