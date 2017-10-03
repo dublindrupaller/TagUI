@@ -1,4 +1,4 @@
-<?php
+<<?php
 /**
  * @file
  *
@@ -6,12 +6,10 @@
 
 /**
  *  snap class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class snap extends step {  
@@ -63,7 +61,7 @@ class snap extends step {
     else return "{techo('".$raw_intent."');".beg_tx($params). $twb.".captureSelector(snap_image(),tx('".$params."'));".end_tx($params);
   }
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function snap_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
