@@ -6,9 +6,10 @@
 
 /**
  *  timeout class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js() 
  */
 
 class timeout extends step {  
@@ -49,4 +50,14 @@ class timeout extends step {
     if ($params == "") echo "ERROR - " . current_line() . " time in seconds missing for " . $raw_intent . "\n";
     else return "casper.options.waitTimeout = " . (floatval($params)*1000) . ";" . end_fi()."\n";
   }
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function timeout_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (params == '') return "this.echo('ERROR - time in seconds missing for " + raw_intent + "')";
+else return check_chrome_context("casper.options.waitTimeout = " + (parseFloat(params)*1000).toString() + ";");}
+TAGUI;
+    return $js;
+  }       
 }
