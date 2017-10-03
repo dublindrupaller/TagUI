@@ -5,9 +5,10 @@
  */
 /**
  *  url class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js() 
  */
 class url extends step {
   
@@ -70,4 +71,14 @@ class url extends step {
       $raw_intent."' + ' - ' + ".$twb.".getTitle());});\n\ncasper.then(function() {\n".$dynamic_footer;}
     }
   }
+
+  
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function url_intent(raw_intent) {
+if (chrome_id == 0) return "this.echo('ERROR - step only supported in live mode using Chrome browser')";
+else return "this.evaluate(function() {window.location.href = \"" + raw_intent + "\"})";}
+TAGUI;
+    return $js;
+  }      
 } 
