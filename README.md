@@ -1,3 +1,6 @@
+# FORK DETAILS
+a Work in progress and unstable version of TagUI to allow elegant extensions for users. 
+
 <img src="https://raw.githubusercontent.com/tebelorg/TagUI/master/src/media/tebel_icon.png" height="111" align="right">
 
 # TagUI

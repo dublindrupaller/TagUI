@@ -8,6 +8,12 @@
 /src/slimerjs/*
 /src/php/*
 /src/unx/*
+/src/steps/custom/casperjs/*
+/src/steps/custom/webdriver/*
+/src/steps/custom/puppeteer/*
+!/src/steps/custom/casperjs/custom_example.class.php
+!/src/steps/custom/webdriver/custom_example.class.php
+!/src/steps/custom/puppeteer/custom_example.class.php
 
 # exclude generated files for hastebin upload
 /src/samples/8_hastebin.js

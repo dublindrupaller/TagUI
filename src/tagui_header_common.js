@@ -1,5 +1,3 @@
-// header javascript file is created dynamically based on live mode = true, sikuli = true or chrome = true
-// header javascript file is created dynamically based on live mode = true, sikuli = true or chrome = true
 // xpath for object identification
 var x = require('casper').selectXPath;
 
@@ -112,4 +110,3 @@ function present(element_locator) {if (!element_locator) return false; else retu
 function sleep(ms) { // helper to add delay during loops
 var time_now = new Date().getTime(); var time_end = time_now + ms;
 while(time_now < time_end) {time_now = new Date().getTime();}}
-
