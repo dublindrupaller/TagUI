@@ -6,9 +6,10 @@
 
 /**
  *  wait class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js() 
  */
 
 class wait extends step {  
@@ -50,4 +51,13 @@ class wait extends step {
     else if ($GLOBALS['inside_popup']!=0) echo "ERROR - " . current_line() . " invalid after popup - " . $raw_intent . "\n";
     else return "techo('".$raw_intent."');});\n\ncasper.wait(" . (floatval($params)*1000) . ", function() {\n";
   }
+
+    
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function wait_intent(raw_intent) {
+return "this.echo('ERROR - waiting for some time is not relevant in live mode')";}
+TAGUI;
+    return $js;
+  }      
 }
