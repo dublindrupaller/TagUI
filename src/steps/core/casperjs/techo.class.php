@@ -6,9 +6,10 @@
 
 /**
  *  techo class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js() 
  */
 
 class techo extends step {
@@ -46,6 +47,16 @@ class techo extends step {
    */
   public function parseIntent($intent, $raw_intent, $twb, $sikuli=FALSE) {     
     // TODO: $params is passed as an array but sent to casperjs code as a string    
-    return "{techo('".$raw_intent."');".beg_tx($params).$twb.".click(tx('" . $params . "'));".end_tx($params);           
+    return "{echo('".$raw_intent."');".beg_tx($params).$twb.".click(tx('" . $params . "'));".end_tx($params);           
   }    
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function echo_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (params == '') return "this.echo('ERROR - text missing for " + raw_intent + "')";
+else return "this.echo(" + add_concat(params) + ")";}
+TAGUI;
+    return $js;
+  }       
 }
