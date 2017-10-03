@@ -6,9 +6,10 @@
 
 /**
  *  hover class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class hover extends step {
@@ -56,6 +57,19 @@ class hover extends step {
       $parsed_code = "{techo('".$raw_intent."');".beg_tx($params).$twb.".mouse.move(tx('" . $params . "'));".end_tx($params);
     }    
     return $parsed_code;
+  }
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function hover_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+if (is_sikuli(params)) {var abs_params = abs_file(params); var abs_intent = raw_intent.replace(params,abs_params);
+return call_sikuli(abs_intent,abs_params);}
+if (params == '') return "this.echo('ERROR - target missing for " + raw_intent + "')";
+else if (check_tx(params)) return "this.mouse.move(tx('" + params + "'))";
+else return "this.echo('ERROR - cannot find " + params + "')";}
+TAGUI;
+    return $js;
   }    
 }
 
