@@ -6,12 +6,10 @@
 
 /**
  *  read class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class read extends step {
@@ -56,7 +54,7 @@ class read extends step {
     if (($param1 == "") or ($param2 == "")) echo "ERROR - " . current_line() . " target/variable missing for " . $raw_intent . "\n"; 
   }
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function read_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
@@ -68,9 +66,8 @@ else if (check_tx(param1)) return param2 + " =  this.fetchText(tx('" + param1 + 
 else return "this.echo('ERROR - cannot find " + param1 + "')";}
 TAGUI;
     return $js;
-  }    
-
-
+  }
+  
 }
 
 class_alias('read', 'fetch');
