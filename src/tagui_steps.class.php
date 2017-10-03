@@ -1,4 +1,5 @@
 
+
 <?php
 /**
  * @file 
@@ -39,7 +40,7 @@ class tagui {
     foreach ($this->classes as $class => $path) {
       include_once($path);
       $this->steps[$class] = new $class($class);
-      //$this->headerjs[] = $this->steps[$class]->getHeaderJs();
+      $this->headerjs[] = $this->steps[$class]->getHeaderJs();
     }
   }
   
