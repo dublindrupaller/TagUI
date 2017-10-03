@@ -2,13 +2,20 @@
 
 include_once('tagui_steps.class.php'); // include the factory class file for the steps
 $tagui = new tagui('casperjs'); // autoload all the step methods for casperjs (getIntent(), parseIntent() and getHeaderJs())
+
+
 $live_mode = FALSE; // switch off live mode by default so we just get raw casperJS test file output
+$chrome_mode = FALSE; // switch off live mode by default so we just get raw casperJS test file output
+
+// loop through step classes for each javascript version for getHeaderJS
 if ($tagui->getHeaderJs($live_mode)) {
-  $header_file = $tagui->getHeaderJs(); // populate the headerJS if LIVE MODE is switched on.
+  $header_live_mode_steps = $tagui->getHeaderJs($live_mode); // populate the headerJS if LIVE MODE is switched on.
 }
 else {
-  $header_file = "//TAGUI LIVE MODE IS OFF";  
+ $header_live_mode_steps = "//TAGUI LIVE MODE IS OFF";  
 }
+$header_live_mode_steps = "//TAGUI STEPS LIVE MODE\n". tagui_minifyJS($header_live_mode_steps) ."\n//TAGUI END OF STEPS LIVE MODE\n";
+
 /* PARSER SCRIPT FOR TAGUI FRAMEWORK ~ TEBEL.ORG */
 
 // check flow filename for .gui or .txt or no extension
@@ -21,6 +28,7 @@ die("ERROR - use .gui or .txt or no extension for flow filename\n");
 if (!file_exists($script)) die("ERROR - cannot find " . $script . "\n");
 $input_file = fopen($script,'r') or die("ERROR - cannot open " . $script . "\n");
 $output_file = fopen($script . '.js','w') or die("ERROR - cannot open " . $script . '.js' . "\n");
+$header_file = fopen('tagui_header.js','r') or die("ERROR - cannot open tagui_header.js" . "\n"); // helper js functions needed for all tests
 $config_file = fopen('tagui_config.txt','r') or die("ERROR - cannot open tagui_config.txt" . "\n");
 $footer_file = fopen('tagui_footer.js','r') or die("ERROR - cannot open tagui_footer.js" . "\n");
 
@@ -49,15 +57,22 @@ $url_provided = false; // to detect if url is provided in user-script
 // series of loops to create casperjs script from header, user flow, footer files
 
 // create header of casperjs script using tagui config and header template
+// create header of casperjs script using tagui config and header template
 fwrite($output_file,"/* OUTPUT CASPERJS SCRIPT FOR TAGUI FRAMEWORK ~ TEBEL.ORG */\n\n");
 fwrite($output_file,"var casper = require('casper').create();\n"); // opening lines
-while(!feof($config_file)) {
-  fwrite($output_file,fgets($config_file));
-} 
-fclose($config_file);
 
-
-fwrite($output_file, $header_file);
+if ($live_mode) { //handle the live mode javascript for the header - only add to header if needed
+  $live_mode_file = file_get_contents('tagui_header_live_mode.js', TRUE) or die("ERROR - cannot open tagui_header_live_mode.js" . "\n");
+  $live_mode_file = "//TAGUI CHROME HELPERS\n". tagui_minifyJS($live_mode_file . $header_live_mode_steps) ."\n//TAGUI END OF CHROME HELPERS\n";
+  fwrite($output_file, $live_mode_file); // live mode javascript parser and javascript steps 
+}
+if($chrome_mode) { //handle the chrome mode javascript for the header - only add to header if needed
+  $chrome_mode_file = file_get_contents('tagui_header_chrome.js', TRUE) or die("ERROR - cannot open tagui_header_live_mode.js" . "\n");
+  $chrome_mode_file = "//TAGUI CHROME HELPERS\n". tagui_minifyJS($chrome_mode_file) ."\n//TAGUI END OF CHROME HELPERS\n";
+  fwrite($output_file, $chrome_mode_file); // chrome mode javascript string replace
+}
+while(!feof($config_file)) {fwrite($output_file,fgets($config_file));} fclose($config_file);
+while(!feof($header_file)) {fwrite($output_file,fgets($header_file));} fclose($header_file);
 
 
 // save flow path in casperjs script to be used by save_text and snap_image
@@ -207,14 +222,18 @@ function parse_intent($script_line, $tagui) {
   }
   // passing variables to parse intent methods
   $twb = $GLOBALS['tagui_web_browser'];
+  
   $script_params = trim(substr($script_line." ",1+strpos($script_line." "," "))); 
+  
   if ($intent = $tagui->getIntent($script_line)) {    
     return $tagui->parseIntent($intent, $script_line, $twb, $sikuli = FALSE);
   }
+  elseif (is_code($raw_intent)) { 
+   return "code"; 
+  }  
   else {
     echo "ERROR - " . current_line() . " cannot understand step " . $script_line . "\n";
   }
-
 }
 
 
@@ -432,4 +451,21 @@ function parse_condition($logic) { // natural language handling for conditions
   if (substr($logic,0,6)=="while ") $GLOBALS['inside_while_loop'] = 1;
   // return code after all the parsing and special handling
   return $logic;
+}
+
+
+/**
+ * Helper function to minify the header js
+ *
+ * @param $jscript
+ * @return mixed|string
+ */
+function tagui_minifyJS($jscript) {
+  // unable to minify efficiently - need to refactor js header and associated files.
+  //$jscript = preg_replace('/((?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\/\/.*))/', '',$jscript); // remove comments
+  //$jscript = preg_replace('/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\)\/\/[^"\'].*))/', '', $jscript);
+  //$jscript = str_replace(["\r\n","\r","\t","\n",'  ','    ','     '], '', $jscript); // remove carraige returns.
+  //$jscript = preg_replace(['(( )+\))','(\)( )+)'], ')', $jscript);
+
+    return $jscript;
 }
