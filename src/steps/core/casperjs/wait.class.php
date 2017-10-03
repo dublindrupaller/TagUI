@@ -6,12 +6,10 @@
 
 /**
  *  wait class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class wait extends step {  
@@ -55,7 +53,7 @@ class wait extends step {
   }
 
     
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function wait_intent(raw_intent) {
 return "this.echo('ERROR - waiting for some time is not relevant in live mode')";}
