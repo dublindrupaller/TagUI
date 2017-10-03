@@ -6,12 +6,10 @@
 
 /**
  *  test class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class test extends step {  
@@ -52,12 +50,15 @@ class test extends step {
     echo "ERROR - " . current_line() . " info at http://docs.casperjs.org/en/latest/modules/tester.html" . "\n";
     echo "ERROR - " . current_line() . " support CSS selector or tx('selector') for XPath algo by TagUI" . "\n";
   }
-
-   public function get_header_js() {
+  
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function test_intent(raw_intent) {
 return "this.echo('ERROR - use CasperJS tester module to professionally " + raw_intent + "\\nERROR - info at http://docs.casperjs.org/en/latest/modules/tester.html\\nERROR - support CSS selector or tx(\\'selector\\') for XPath algo by TagUI')";}
+
 TAGUI;
     return $js;
   }       
 }
+
+

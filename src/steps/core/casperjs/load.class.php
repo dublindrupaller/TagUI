@@ -4,9 +4,8 @@
  *
  */
 /**
- *
+ *  load class which is a child of step
  *  The class contains four methods:
- *  - __construct
  *  - public getIntent()
  *  - public parseIntent()
  *  - public get_header_js()
@@ -24,11 +23,9 @@ class load extends step {
    */
   public function getIntent($intent) {    
     
-    if (substr($lc_raw_intent,0,5)=="load ") {
+    if (substr($intent,0,5)=="load ") {
       return $this->intent;
    }
-    }
-    
     return FALSE;
   }
   /**
@@ -47,16 +44,22 @@ class load extends step {
     if (($param1 == "") or ($param2 == ""))
     echo "ERROR - " . current_line() . " filename missing for " . $raw_intent . "\n"; else
     return "{techo('".$raw_intent."');".beg_tx($param1).
-    $twb.".page.uploadFile(tx('".$param1."'),'".abs_file($param2)."');".end_tx($param1);}
+    $twb.".page.uploadFile(tx('".$param1."'),'".abs_file($param2)."');".end_tx($param1);
   }
+  
 
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
-function url_intent(raw_intent) {
-if (chrome_id == 0) return "this.echo('ERROR - step only supported in live mode using Chrome browser')";
-else return "this.evaluate(function() {window.location.href = \"" + raw_intent + "\"})";}
+function load_intent(raw_intent) {
+var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
+var param1 = (params.substr(0,params.indexOf(' to '))).trim();
+var param2 = (params.substr(4+params.indexOf(' to '))).trim();
+if (params == '') return "this.echo('ERROR - filename missing for " + raw_intent + "')";
+else if (params.indexOf(' to ') > -1)
+return "var fs = require('fs'); " + param2 + " = ''; if (fs.exists('" + abs_file(param1) + "')) " + param2 +  " = fs.read('" + abs_file(param1) + "').trim(); else this.echo('ERROR - cannot find file " + param1 + "')"; else
+return "this.echo('ERROR - variable missing for " + raw_intent + "')";}
 TAGUI;
     return $js;
   }      
-}
+} 

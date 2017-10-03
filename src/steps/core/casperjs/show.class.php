@@ -6,12 +6,10 @@
 
 /**
  *  show class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class show extends step {
@@ -55,7 +53,7 @@ class show extends step {
     else return "{// nothing to do on this line".beg_tx($params)."this.echo('".$raw_intent."' + ' - ' + ".$twb.".fetchText(tx('" . $params . "')).trim());".end_tx($params);
   }
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function show_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();

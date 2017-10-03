@@ -6,12 +6,10 @@
 
 /**
  *  check class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public getHeaderJs()
  */
 
 class check extends step {  
@@ -51,3 +49,21 @@ class check extends step {
     $params = trim(substr($raw_intent." ",1+strpos($raw_intent." "," ")));
     $params = str_replace("||"," JAVASCRIPT_OR ",$params); // to handle conflict with "|" delimiter
     $param1 = trim(substr($params,0,strpos($params,"|"))); 
+    $param2 = trim(substr($params,1+strpos($params,"|")));
+    $param3 = trim(substr($param2,1+strpos($param2,"|"))); 
+    $param2 = trim(substr($param2,0,strpos($param2,"|")));
+    $param1 = str_replace(" JAVASCRIPT_OR ","||",$param1); // to restore back "||" that were replaced
+    $param2 = str_replace(" JAVASCRIPT_OR ","||",$param2); 
+    $param3 = str_replace(" JAVASCRIPT_OR ","||",$param3);
+    if (substr_count($params,"|")!=2) echo "ERROR - " . current_line() . " if/true/false missing for " . $raw_intent . "\n"; 
+    else return "{".parse_condition("if ".$param1)."\nthis.echo(".$param2.");\nelse this.echo(".$param3.");}".end_fi()."\n";
+  } 
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+  function check_intent(raw_intent) {
+return "this.echo('ERROR - step not supported in live mode, there is no conditions language parser')";}
+TAGUI;
+    return $js;
+  }
+}

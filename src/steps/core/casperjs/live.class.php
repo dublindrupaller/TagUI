@@ -6,12 +6,10 @@
 
 /**
  *  live class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public getHeaderJs()
  */
 
 class live extends step {  
@@ -52,7 +50,7 @@ class live extends step {
   }
 
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function live_intent(raw_intent) {
 return "this.echo('ERROR - you are already in live mode, type done to quit live mode')";}

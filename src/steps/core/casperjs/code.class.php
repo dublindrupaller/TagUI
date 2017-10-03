@@ -6,11 +6,10 @@
 
 /**
  *  code class which is a child of step
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public getHeaderJs()
  */
 
 class code extends step {  
@@ -55,12 +54,11 @@ class code extends step {
   }
 
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
  function code_intent(raw_intent) {
 return check_chrome_context(raw_intent);}
 TAGUI;
     return $js;
   }
-
 }
