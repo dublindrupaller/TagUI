@@ -6,9 +6,10 @@
 
 /**
  *  select class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js() 
  */
 
 class select extends step {
@@ -62,9 +63,18 @@ class select extends step {
     else return "{techo('".$raw_intent."');".beg_tx($param1)."var select_locator = tx('".$param1."');\n"."if (is_xpath_selector(select_locator.toString().replace('xpath selector: ','')))\n"."select_locator = select_locator.toString().substring(16);\n".$twb.".selectOptionByValue(select_locator,'".$param2."');".end_tx($param1);
   }
 
+
+  
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function select_intent(raw_intent) {
+  return;
+}
+TAGUI;
+    return $js;
+  }    
+
+
 }
 
 class_alias('select', 'choose');
-
-
-
