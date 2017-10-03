@@ -6,9 +6,10 @@
 
 /**
  *  live class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class live extends step {  
@@ -47,5 +48,14 @@ class live extends step {
   public function parseIntent($intent, $raw_intent, $twb, $sikuli=FALSE) {     
     return "{var live_input = ''; var sys = require('system'); sys.stdout.write('LIVE MODE - type done to quit\\n \\b');\n"."while (true) {live_input = sys.stdin.readLine(); // evaluate input in casperjs context until done is entered\n"."if (live_input.indexOf('done') == 0) break; eval(tagui_parse(live_input));}}".end_fi()."\n";
   }
+
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+function live_intent(raw_intent) {
+return "this.echo('ERROR - you are already in live mode, type done to quit live mode')";}
+TAGUI;
+    return $js;
+  }    
 
 }
