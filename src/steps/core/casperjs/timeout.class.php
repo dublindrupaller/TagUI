@@ -6,12 +6,10 @@
 
 /**
  *  timeout class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class timeout extends step {  
@@ -53,7 +51,7 @@ class timeout extends step {
     else return "casper.options.waitTimeout = " . (floatval($params)*1000) . ";" . end_fi()."\n";
   }
 
-   public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function timeout_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
