@@ -29,6 +29,6 @@ abstract class step {
    * @return casperjs code as string
    *
    */
-  // abstract public function get_header_js($intent, $raw_intent, $twb, $sikuli = FALSE);
+  abstract public function getHeaderJs();
     
 }
