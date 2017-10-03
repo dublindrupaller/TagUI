@@ -6,9 +6,10 @@
 
 /**
  *  code class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class code extends step {  
@@ -50,5 +51,14 @@ class code extends step {
     // not relevant to call end_fi for condition statement, will reset for and while loop tracker prematurely
     if ((substr($params,0,3)=="if ") or (substr($params,0,8)=="else if ") or (substr($params,0,4)=="for ") or (substr($params,0,6)=="while ")) return $params."\n"; 
     else return $params.end_fi()."\n";
+  }
+
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+ function code_intent(raw_intent) {
+return check_chrome_context(raw_intent);}
+TAGUI;
+    return $js;
   }
 }
