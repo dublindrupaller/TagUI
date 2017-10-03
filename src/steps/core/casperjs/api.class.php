@@ -7,9 +7,10 @@
 
 /**
  *  api class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class api extends step {  
@@ -51,7 +52,7 @@ class api extends step {
     else return "{techo('".$raw_intent."');\napi_result = call_api('".$params."');\n" ."try {api_json = JSON.parse(api_result);} catch(e) {api_json = JSON.parse('null');}}".end_fi()."\n";
   }
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
   function api_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
@@ -61,5 +62,4 @@ else return "api_result = call_api('" + params + "'); " +
 TAGUI;
     return $js;
   }
-
 }
