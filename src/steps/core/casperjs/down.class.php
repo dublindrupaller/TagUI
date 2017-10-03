@@ -6,9 +6,10 @@
 
 /**
  *  down class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class down extends step {
@@ -55,7 +56,7 @@ class down extends step {
   } 
 
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function down_intent(raw_intent) {
 var params = ((raw_intent + ' ').substr(1+(raw_intent + ' ').indexOf(' '))).trim();
@@ -66,4 +67,6 @@ else return "this.download('" + param1 + "','" + abs_file(param2) + "')";}
 TAGUI;
    return $js;
   }
+
+
 }
