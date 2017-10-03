@@ -6,9 +6,10 @@
 
 /**
  *  check class which is a child of step
- *  The class contains two methods:
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public getHeaderJs()
  */
 
 class check extends step {  
@@ -56,5 +57,13 @@ class check extends step {
     $param3 = str_replace(" JAVASCRIPT_OR ","||",$param3);
     if (substr_count($params,"|")!=2) echo "ERROR - " . current_line() . " if/true/false missing for " . $raw_intent . "\n"; 
     else return "{".parse_condition("if ".$param1)."\nthis.echo(".$param2.");\nelse this.echo(".$param3.");}".end_fi()."\n";
+  } 
+
+  public function getHeaderJs() {
+    $js = <<<TAGUI
+  function check_intent(raw_intent) {
+return "this.echo('ERROR - step not supported in live mode, there is no conditions language parser')";}
+TAGUI;
+    return $js;
   }
 }
