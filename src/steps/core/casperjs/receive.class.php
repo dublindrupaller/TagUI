@@ -6,12 +6,10 @@
 
 /**
  *  receive class which is a child of step
- *
- *  The class contains four methods:
- *  - __construct
+ *  The class contains three methods:
  *  - public getIntent()
  *  - public parseIntent()
- *  - public get_header_js()
+ *  - public get_header_js() 
  */
 
 class receive extends step {  
@@ -55,11 +53,12 @@ class receive extends step {
     else return "{techo('".$raw_intent."');\n"."casper.on('resource.received', function(resource) {if (resource.stage !== 'end') return;\n"."if (resource.url.indexOf('".$param1."') > -1) ".$twb.".download(resource.url, '".abs_file($param2)."');});}".end_fi()."\n";
   }
 
-  public function get_header_js() {
+  public function getHeaderJs() {
     $js = <<<TAGUI
 function receive_intent(raw_intent) {
 return "this.echo('ERROR - step not supported in live mode, it requires creating CasperJS event')";}
 TAGUI;
     return $js;
-  }    
+  }
+  
 }
