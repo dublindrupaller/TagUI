@@ -6,9 +6,11 @@
 
 /**
  *  custom-example class which is a child of step
- *  The class contains two methods:
+ *  The class contains four methods:
+ *  - __construct
  *  - public getIntent()
  *  - public parseIntent()
+ *  - public get_header_js()
  */
 
 
@@ -46,5 +48,9 @@ class custom_example extends step {
 
     // add your custom step parse logic here
   }
+
+  public function getHeaderJs() {
+    return;
+  }      
 
 }
