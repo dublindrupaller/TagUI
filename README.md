@@ -96,19 +96,27 @@ class_alias('tap', 'click');
 The key advantages of those approach are as follows:
 
 **1. Simplifies enhancements and future-proofs contibutions**
+
 As you can see from the above example step, you can tweak the core step intent output and the tagui_headerjs output in the one file. 
+
 
 ```php
 getIntent() # works out the array of arguments for a given step and returns the necessary output for parsing
 parseIntent() # returns the output script to be added to the test file for the given step
 getHeaderJs() # returns the script to be added to the tagui_header.js (chrome live mode) for the given step
 ```
+
 So, instead of touching and updating tagui_header.js and tagui_parse.php, you just update the step class file.
 
+
 **2. Extend steps elegantly and benefit from further improvements**
-As the usage of TAGUI increases, so does the opportunity for more collaborations and improvements that can be shared/merged with the core TAGUI codebase. The Object Orientated approach beging put forward here allows that. In other words, TAGUI users who want to tweak and extend TAGUI for their own use have, at the moment, no choice but to change tagui_parse.php, tagui_header.js along with other files. Which also means, if the core TAGUI code improves, they run into conflicts when trying to update their local working version.
+
+As the usage of TAGUI increases, so does the opportunity for more collaborations and improvements that can be shared/merged with the core TAGUI codebase. 
+
+The Object Orientated approach beging put forward here allows that. In other words, TAGUI users who want to tweak and extend TAGUI for their own use have, at the moment, no choice but to change tagui_parse.php, tagui_header.js along with other files. Which also means, if the core TAGUI code improves, they run into conflicts when trying to update their local working version.
 
 **3. Future-proof TAGUI by supporting casperJS, webdriver, puppeteer and other test script languages**
+
 The approach in this demo illustrates that you can use TAGUI to parse natural language test files into languages other than casperjs. 
 
 ```php
@@ -125,4 +133,6 @@ tagui/src/steps/custom/webdriver
 Please note: I have just setup those folders for illustrative/demo purposes. 
 
 **4. Tidier, more efficient core codebase**
+
 There is a lot of code repetition in the core tagui_parse.php and other key core files. This object orientated approach reduces that repetition making it easier to maintain and easier for tagui users to contribute enhancements in the form of pull requests or patches. 
+
