@@ -6,7 +6,7 @@ This is a working demo for Ken illustrating the ability to:
 3. Reduce repetition in core tagui codebase using Object Orientated approach to parsing natural language tests.
 4. Allow the switch to using tagui to run casperjs, webdriver, Puppeteer (and potentially other) script language tests.
 
-# Core Concepts  - OOP approach to parsing steps
+# Core Concept  - Object Orientated approach to parsing steps
 Below is an example of the suggested approach. It uses an Object Oriented approach to building the step definitions and the resulting output.
 ```
 # core TAGUI Steps are now located in the following folder
@@ -124,4 +124,5 @@ tagui/src/steps/custom/webdriver
 ```
 Please note: I have just setup those folders for illustrative/demo purposes. 
 
-
+**4. Tidier, more efficient core codebase**
+There is a lot of code repetition in the core tagui_parse.php and other key core files. This object orientated approach reduces that repetition making it easier to maintain and easier for tagui users to contribute enhancements in the form of pull requests or patches. 
