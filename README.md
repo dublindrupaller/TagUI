@@ -93,7 +93,7 @@ TAGUI;
 class_alias('tap', 'click');
 ```
 
-The key advantages of those approach are as follows:
+The key advantages of this approach are as follows:
 
 **1. Simplifies enhancements and future-proofs contibutions**
 
@@ -113,7 +113,7 @@ So, instead of touching and updating tagui_header.js and tagui_parse.php, you ju
 
 As the usage of TAGUI increases, so does the opportunity for more collaborations and improvements that can be shared/merged with the core TAGUI codebase. 
 
-The Object Orientated approach beging put forward here allows that. In other words, TAGUI users who want to tweak and extend TAGUI for their own use have, at the moment, no choice but to change tagui_parse.php, tagui_header.js along with other files. Which also means, if the core TAGUI code improves, they run into conflicts when trying to update their local working version.
+The Object Orientated approach being put forward here allows that. In other words, TAGUI users who want to tweak and extend TAGUI for their own use have, at the moment, no choice but to change tagui_parse.php, tagui_header.js along with other files. Which also means, if the core TAGUI code improves, they run into conflicts when trying to update their local working version.
 
 **3. Future-proof TAGUI by supporting casperJS, webdriver, puppeteer and other test script languages**
 
